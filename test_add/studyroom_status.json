@@ -1,0 +1,44 @@
+[
+	{
+		"room_name": "열람실명",
+		"total_seats": "전체좌석",
+		"used_seats": "사용좌석",
+		"remaining_seats": "잔여좌석",
+		"utilization_rate": "이용률(%)"
+	},
+	{
+		"room_name": "3층 제1열람실",
+		"total_seats": "168",
+		"used_seats": "0",
+		"remaining_seats": "168",
+		"utilization_rate": "0%"
+	},
+	{
+		"room_name": "4층 제2열람실",
+		"total_seats": "234",
+		"used_seats": "7",
+		"remaining_seats": "227",
+		"utilization_rate": "2.99%"
+	},
+	{
+		"room_name": "3층 노트북열람실1",
+		"total_seats": "180",
+		"used_seats": "0",
+		"remaining_seats": "180",
+		"utilization_rate": "0%"
+	},
+	{
+		"room_name": "4층 노트북열람실2",
+		"total_seats": "180",
+		"used_seats": "35",
+		"remaining_seats": "145",
+		"utilization_rate": "19.44%"
+	},
+	{
+		"room_name": "계",
+		"total_seats": "762",
+		"used_seats": "42",
+		"remaining_seats": "720",
+		"utilization_rate": "5.51%"
+	}
+]
