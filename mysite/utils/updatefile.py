@@ -72,8 +72,9 @@ def update_food_list(excel_file_path):
         filtered = df[(df["MENU_DATE"] == menu_date) & (df["REST_NO"] == rest_no) & (df["PRICELEVEL"] == price_level)]
         if not filtered.empty:
             lst = list(filtered.iloc[0]["MENU"].split("\r\n"))
+            for s in lst : s.rstrip(' ')
             lst = list(filter(bool, lst))
-            return ", ".join(lst)  # 첫 번째 결과 반환
+            return ", ".join(lst).rstrip(',')  # 첫 번째 결과 반환
         else:
             return "메뉴를 찾을 수 없습니다. "
 
