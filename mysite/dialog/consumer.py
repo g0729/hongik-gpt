@@ -2,7 +2,7 @@ from channels.generic.websocket import AsyncJsonWebsocketConsumer
 import json
 from utils.intent import predict
 from utils.FindAnswer import FindAnswer
-from utils.scrapper import Scrapper, get_phone_number
+from utils.scrapper import ChromeDriver, get_phone_number, get_studyroom_status
 from .apps import DialogConfig
 import time
 import numpy as np
@@ -58,11 +58,11 @@ class DialogConsumer(AsyncJsonWebsocketConsumer):
             status_list = []
 
             if "학관" in message or "H" in message or "G" in message:
-                status_list = Scrapper().get_studyroom_status(mode=0)
+                status_list = get_studyroom_status(mode=0)
             elif "T" in message:
-                status_list = Scrapper().get_studyroom_status(mode=1)
+                status_list = get_studyroom_status(mode=1)
             elif "R" in message:
-                status_list = Scrapper().get_studyroom_status(mode=2)
+                status_list = get_studyroom_status(mode=2)
 
             if status_list:
                 return_message = generate_html_table(status_list)
