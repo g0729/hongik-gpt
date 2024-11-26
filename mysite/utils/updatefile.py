@@ -1,7 +1,7 @@
 import schedule
 import datetime
 import pandas as pd
-from .scrapper import Scrapper
+from .scrapper import ChromeDriver, get_notice
 import json
 from collections import OrderedDict
 import requests
@@ -16,7 +16,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from configure import RENEW_FILE_PATH, FOOD_LIST_FILE_PATH, API_FOOD_URL, NOTICE_FILE_PATH
 
 # Scrapper 클래스 인스턴스 생성
-scraper = Scrapper()
+scraper = ChromeDriver()
 
 # 요일을 한국어로 매핑하는 딕셔너리
 weekdays_korean = {"Monday": "월", "Tuesday": "화", "Wednesday": "수", "Thursday": "목", "Friday": "금", "Saturday": "토", "Sunday": "일"}
@@ -72,9 +72,10 @@ def update_food_list(excel_file_path):
         filtered = df[(df["MENU_DATE"] == menu_date) & (df["REST_NO"] == rest_no) & (df["PRICELEVEL"] == price_level)]
         if not filtered.empty:
             lst = list(filtered.iloc[0]["MENU"].split("\r\n"))
-            for s in lst : s.rstrip(' ')
+            for s in lst:
+                s.rstrip(" ")
             lst = list(filter(bool, lst))
-            return ", ".join(lst).rstrip(',')  # 첫 번째 결과 반환
+            return ", ".join(lst).rstrip(",")  # 첫 번째 결과 반환
         else:
             return "메뉴를 찾을 수 없습니다. "
 
@@ -107,7 +108,7 @@ def update_food_list(excel_file_path):
 
 # 공지사항 크롤링 및 엑셀 파일 업데이트
 def update_notice(excel_file_path):
-    scraper.get_notice()
+    get_notice()
 
     # 공지사항 중 중복되는 것 없애기
     with open(NOTICE_FILE_PATH, "r") as f:

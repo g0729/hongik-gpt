@@ -22,6 +22,8 @@ def interval_job():
 def daily_job():
     print("Running daily job tasks...")
     updatefile.update_food_list(RENEW_FILE_PATH)
+    run_renew()
+    renew_df()
 
 
 def run_renew():
