@@ -126,11 +126,9 @@ def update_notice(excel_file_path):
 
     notice_df = pd.DataFrame(unique_notices)
     ret_notice = ""
-    for i in range(min(5, len(notice_df))):
-        ret_notice += f"작성자 : {notice_df.iloc[i]['name']}\n"
-        ret_notice += f"제목 : {notice_df.iloc[i]['subject']}\n"
-        ret_notice += f"링크 : {notice_df.iloc[i]['link']}\n"
-        ret_notice += f"작성일자 : {notice_df.iloc[i]['date']}\n\n"
+    for i in range(min(8, len(notice_df))):
+        ret_notice += f'<a href="{notice_df.iloc[i]['link']}" target="_blank">{notice_df.iloc[i]['subject']} </a> | '
+        ret_notice += f"{notice_df.iloc[i]['date']}<br><br>"
     # 엑셀 파일 불러오기
     workbook = openpyxl.load_workbook(excel_file_path)
     sheet = workbook.active  # 활성화된 시트 선택

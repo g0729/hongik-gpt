@@ -28,7 +28,6 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from configure import (
     NOTICE_URL,
-    NOTICE_ADD_URL,
     NOTICE_FILE_PATH,
     PHONE_NUMBER_OFFICE_URL,
     PHONE_NUMBER_PERSON_URL,
@@ -72,33 +71,6 @@ class ChromeDriver:
     def get_driver(cls):
         instance = cls()
         return instance.driver
-
-
-def get_notice():
-
-    browser = ChromeDriver.get_driver()
-    browser.get(NOTICE_URL)
-    browser.implicitly_wait(10)
-    soup = BeautifulSoup(browser.page_source, "html.parser")
-
-    table = soup.find_all("table")[1]
-    sub = re.compile(r"pkid=[0-9]*\^")
-    data_list = []
-    for notice in table.find_all("tr")[1:]:
-        data = OrderedDict()
-        td_list = notice.find_all("td")
-        data["subject"] = td_list[1].find("span").text
-        link = td_list[1].a["href"]
-        link = sub.findall(link)[0][:-1]
-        data["link"] = f"{NOTICE_ADD_URL}{link}"
-        data["name"] = td_list[2].text
-        data["date"] = td_list[4].text
-        data_list.append(data)
-
-    with open(NOTICE_FILE_PATH, "w") as f:
-        json.dump(data_list, f, ensure_ascii=False, indent="\t")
-    browser.close()
-
 
 def get_studyroom_status(mode):
     # mode 0 : 학관, mode 1 : T동, mode 2 : R동
@@ -213,15 +185,14 @@ async def get_phone_number(search_query, mode):
         return {}
 
 
-def get_notice_test():
-    url = "https://wwwce.hongik.ac.kr/wwwce/0401.do"
+def get_notice():
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
         "Referer": "https://www.hongik.ac.kr/",
     }
 
     # HTTP GET 요청
-    response = requests.get(url, headers=headers)
+    response = requests.get(NOTICE_URL, headers=headers)
 
     # 응답 확인
     if response.status_code != 200:
@@ -234,7 +205,7 @@ def get_notice_test():
         data = OrderedDict()
         td = content.find_all("td")[1]
         data["subject"] = td.a["title"]
-        data["link"] = url + td.a["href"]
+        data["link"] = NOTICE_URL + td.a["href"]
         data["date"] = td.find("span", {"class": "b-date"}).text.strip()
         data_list.append(data)
 
@@ -246,7 +217,7 @@ if __name__ == "__main__":
     a = ChromeDriver()
     dormitory_url = "https://www.hongik.ac.kr/kr/life/seoul-cafeteria-view.do?articleNo=5414&restNo=2"
     staff_url = "https://www.hongik.ac.kr/kr/life/seoul-cafeteria-view.do?articleNo=5413&restNo=3"
-    get_notice_test()
+    get_notice()
     # d1 = a.get_phone_number("요건없을걸", 0)
     # d2 = a.get_phone_number("배성일", 1)
     # print(d1)
